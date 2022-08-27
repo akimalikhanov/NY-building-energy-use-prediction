@@ -1,0 +1,33 @@
+digraph Tree {
+node [shape=box, style="filled, rounded", color="black", fontname=helvetica] ;
+edge [fontname=helvetica] ;
+0 [label="Year Built <= 0.591\nfriedman_mse = 29.255\nsamples = 6622\nvalue = -0.007", fillcolor="#f3c3a1"] ;
+1 [label="friedman_mse = 26.76\nsamples = 10\nvalue = -3.676", fillcolor="#fbe9dd"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="Site EUI (kBtu/ft²) <= 0.33\nfriedman_mse = 29.245\nsamples = 6612\nvalue = -0.003", fillcolor="#f3c3a1"] ;
+0 -> 2 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+3 [label="Year Built <= 0.941\nfriedman_mse = 19.374\nsamples = 2120\nvalue = 0.196", fillcolor="#f2c19e"] ;
+2 -> 3 ;
+4 [label="Water Use (All Water Sources) (kgal) <= 0.0\nfriedman_mse = 18.954\nsamples = 1808\nvalue = 0.251", fillcolor="#f2c09d"] ;
+3 -> 4 ;
+5 [label="(...)", fillcolor="#C0C0C0"] ;
+4 -> 5 ;
+10 [label="(...)", fillcolor="#C0C0C0"] ;
+4 -> 10 ;
+95 [label="DOF Gross Floor Area <= 0.031\nfriedman_mse = 21.686\nsamples = 312\nvalue = -0.122", fillcolor="#f3c4a3"] ;
+3 -> 95 ;
+96 [label="(...)", fillcolor="#C0C0C0"] ;
+95 -> 96 ;
+141 [label="(...)", fillcolor="#C0C0C0"] ;
+95 -> 141 ;
+142 [label="Largest Property Use Type_Multifamily Housing <= 0.5\nfriedman_mse = 33.877\nsamples = 4492\nvalue = -0.097", fillcolor="#f3c4a2"] ;
+2 -> 142 ;
+143 [label="Property Id <= 0.997\nfriedman_mse = 33.791\nsamples = 4474\nvalue = -0.085", fillcolor="#f3c4a2"] ;
+142 -> 143 ;
+144 [label="(...)", fillcolor="#C0C0C0"] ;
+143 -> 144 ;
+217 [label="(...)", fillcolor="#C0C0C0"] ;
+143 -> 217 ;
+218 [label="friedman_mse = 46.32\nsamples = 18\nvalue = -3.791", fillcolor="#fbebdf"] ;
+142 -> 218 ;
+}
