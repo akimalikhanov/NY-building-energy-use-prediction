@@ -1,10 +1,8 @@
-from gettext import npgettext
-from re import L
 import streamlit as st
 from streamlit_folium import folium_static 
 import pandas as pd
 import numpy as np
-import pickle
+import joblib
 import matplotlib.pyplot as plt
 plt.style.use('ggplot')
 import seaborn as sns
@@ -97,22 +95,23 @@ def build_scatter(data, types):
 
 def prepare_data_for_model(data):
     X_train=pd.read_csv('data/testing_features.csv')
-    X_train=X_train.loc[:,['Site EUI (kBtu/ft²)', \
-        'Weather Normalized Site Electricity Intensity (kWh/ft²)',\
-        'Weather Normalized Site Natural Gas Intensity (therms/ft²)',\
-        'Year Built',\
-        'Order',\
-        'Property Id',\
-        'Latitude',\
-        'DOF Gross Floor Area',
-        'Longitude',
-        'Largest Property Use Type_Multifamily Housing']]
+    X_train=X_train.loc[:, ['Site EUI (kBtu/ft²)',
+ 'Weather Normalized Site Electricity Intensity (kWh/ft²)',
+ 'Largest Property Use Type_Multifamily Housing',
+ 'DOF Gross Floor Area',
+ 'Year Built',
+ 'Largest Property Use Type_Non-Refrigerated Warehouse',
+ 'Water Use (All Water Sources) (kgal)',
+ 'Order',
+ 'Largest Property Use Type_Distribution Center',
+ 'Census Tract']]
+
     sc=MinMaxScaler().fit(X_train)
     data=sc.transform(data)
     return data
 
 def predict(data):
-    model=pickle.load(open('models/reduced_gbtree.sav', 'rb'))
+    model=joblib.load('models/reduced_rf.sav')
     y_pred=model.predict(data)
     return y_pred[0]
 
@@ -170,14 +169,14 @@ if bar=='EDA':
 else:
     x_dict={'Site EUI (kBtu/ft²)': None,
             'Weather Normalized Site Electricity Intensity (kWh/ft²)':None,
-            'Weather Normalized Site Natural Gas Intensity (therms/ft²)':None,
-            'Year Built':None,
-            'Order':None,
-            'Property Id':None,
-            'Latitude':None,
+            'Largest Property Use Type_Multifamily Housing':None,
             'DOF Gross Floor Area':None,
-            'Longitude':None,
-            'Largest Property Use Type_Multifamily Housing':None}
+            'Year Built':None,
+            'Largest Property Use Type_Non-Refrigerated Warehouse':None,
+            'Water Use (All Water Sources) (kgal)':None,
+            'Order':None,
+            'Largest Property Use Type_Distribution Center':None,
+            'Census Tract':None}
 
     # if st.button('Submit'):
     st.info('Fill in all boxes and press Submit button to get a predicted score')
@@ -186,15 +185,15 @@ else:
         with col1:
                 x_dict['Site EUI (kBtu/ft²)']=st.number_input('Site EUI (kBtu/ft²)')
                 x_dict['Weather Normalized Site Electricity Intensity (kWh/ft²)']=st.number_input('Weather Normalized Site Electricity Intensity (kWh/ft²)')
-                x_dict['Weather Normalized Site Natural Gas Intensity (therms/ft²)']=st.number_input('Weather Normalized Site Natural Gas Intensity (therms/ft²)')
+                x_dict['Largest Property Use Type_Multifamily Housing']=st.number_input('Largest Property Use Type_Multifamily Housing')
                 x_dict['Year Built']=st.number_input('Year Built')
-                x_dict['Order']=st.number_input('Order')
+                x_dict['Largest Property Use Type_Non-Refrigerated Warehouse']=st.number_input('Largest Property Use Type_Non-Refrigerated Warehouse')
         with col2:
-            x_dict['Property Id']=st.number_input('Property Id')
-            x_dict['Latitude']=st.number_input('Latitude')
+            x_dict['Water Use (All Water Sources) (kgal)']=st.number_input('Water Use (All Water Sources) (kgal)')
+            x_dict['Order']=st.number_input('Order')
             x_dict['DOF Gross Floor Area']=st.number_input('DOF Gross Floor Area')
-            x_dict['Longitude']=st.number_input('Longitude')
-            x_dict['Largest Property Use Type_Multifamily Housing']=st.number_input('Largest Property Use Type_Multifamily Housing')
+            x_dict['Largest Property Use Type_Distribution Center']=st.number_input('Largest Property Use Type_Distribution Center')
+            x_dict['Census Tract']=st.number_input('Census Tract')
         
         submitted = st.form_submit_button("Submit")
 
